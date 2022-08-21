@@ -1,31 +1,27 @@
 //https://jsonplaceholder.typicode.com/todos
-let getData = (resource) => {
-  return new Promise((resolve, reject) => {
-    let request = new XMLHttpRequest();
-    request.addEventListener("readystatechange", () => {
-      if (request.status == 200) {
-        let changeJsonFormat = JSON.parse(request.responseText);
-        resolve(changeJsonFormat);
-      } else if (request.status == 404) {
-        reject("404 not found.");
-      }
-    });
-    request.open("GET", resource);
-    request.send();
-  });
-};
-getData("https://jsonplaceholder.typicode.com/todos")
-  .then((datas) => {
-    console.log(datas);
-    return getData("arkar.json");
+fetch("https://jsonplaceholder.typicode.com/todos")
+  .then((response) => {
+    if (response.status === 404) {
+      throw new Error("404 not found.");
+    }
+    return response.json();
   })
-  .then((datas) => {
-    console.log(datas);
-    return getData("https://jsonplaceholder.typicode.com/todos");
-  })
-  .then((datas) => {
-    console.log(datas);
+  .then((response) => {
+    console.log(response);
+    fetch("https://jsonplaceholder.typicode.com/todoss")
+      .then((response) => {
+        if (response.status === 404) {
+          throw new Error("404 not found.");
+        }
+        return response.json();
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   })
   .catch((err) => {
-    console.log(err);
+    console.log(err.message);
   });
