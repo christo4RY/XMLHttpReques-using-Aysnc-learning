@@ -1,20 +1,16 @@
 //https://jsonplaceholder.typicode.com/todos
-fetch("https://jsonplaceholder.typicode.com/todos")
-  .then((response) => {
-    if (response.status === 404) {
-      throw new Error("404 not found.");
-    }
-    return response.json();
-  })
+let getData = async (resource) => {
+  let fetchData = await fetch(resource);
+  if (fetchData.status === 404) {
+    throw new Error("404 not found.");
+  }
+  let datas = fetchData.json();
+  return datas;
+};
+getData("https://jsonplaceholder.typicode.com/todos")
   .then((response) => {
     console.log(response);
-    fetch("https://jsonplaceholder.typicode.com/todoss")
-      .then((response) => {
-        if (response.status === 404) {
-          throw new Error("404 not found.");
-        }
-        return response.json();
-      })
+    getData("https://jsonplaceholder.typicode.com/todoss")
       .then((response) => {
         console.log(response);
       })
